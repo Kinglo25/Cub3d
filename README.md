@@ -1,110 +1,190 @@
-Project Cub3D - 42 School
-The Cub3D project is a captivating dive into computer graphics and game development at 42 School, inspired by the classic Wolfenstein 3D. Students create a 3D maze game using raycasting to render a first-person perspective from a 2D map. This project teaches fundamentals of real-time rendering, event handling, and low-level graphics programming while emphasizing performance and precision.
-Core Objective
+# Cub3d
 
-Develop a dynamic 3D maze explorer that renders a navigable environment from a user-defined map file. The program must parse map configurations, handle player movement, and display textured walls, floors, and ceilings in real time using raycasting techniques.
-Key Requirements
+_Cub3d_ is a School 42 project focused on building a basic 3D game engine using raycasting techniques. In this project, you will implement a simple 3D renderer in C that simulates a 3D perspective on a 2D grid map. The project challenges you to work with graphics programming, input handling, and basic game mechanics, while also enhancing your understanding of low-level programming and mathematical concepts.
 
-    Map Parsing:
+---
 
-        Read a .cub file defining:
+## Table of Contents
 
-            Textures for walls (North, South, East, West).
+- [Introduction](#introduction)
+- [Project Description](#project-description)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Troubleshooting](#troubleshooting)
+- [Contributing](#contributing)
+- [Author](#author)
+- [License](#license)
 
-            Colors for floor and ceiling (RGB values).
+---
 
-            A 2D map grid (0 = empty, 1 = wall, N/S/E/W = player start).
+## Introduction
 
-        Validate the map:
+The _Cub3d_ project is a hands-on challenge designed to introduce you to 3D game engine development using raycasting. Inspired by early 3D games like Wolfenstein 3D, this project focuses on rendering a 3D world from a 2D map, handling user inputs, and managing basic collision and navigation mechanics.
 
-            Must be enclosed by walls.
+---
 
-            No invalid characters or configuration errors.
+## Project Description
 
-    Rendering:
+In Cub3d, you will develop a 3D engine that:
+- Uses raycasting to simulate a 3D environment on a 2D grid-based map.
+- Renders walls, floors, ceilings, and sprites based on a given map configuration.
+- Handles player movement, collision detection, and basic game mechanics.
+- Supports simple textures for walls and objects to enhance visual realism.
 
-        Use raycasting to project a 3D view from the 2D map.
+The project is structured to break down the main functionalities into modules, such as:
+- **Map Parsing:** Reading and validating the map configuration.
+- **Raycasting Engine:** Calculating ray intersections and rendering the scene.
+- **User Input:** Managing keyboard and mouse inputs for player control.
+- **Game Loop:** Continuously updating the game state and rendering frames.
 
-        Apply textures to walls and solid colors to floors/ceilings.
+---
 
-        Smoothly render movement and rotations (keyboard + mouse).
+## Features
 
-    Player Controls:
+- **Raycasting Engine:** Implements raycasting techniques to render a 3D view from a 2D map.
+- **Texture Mapping:** Applies textures to walls and sprites to give a realistic appearance.
+- **User Control:** Supports keyboard inputs for navigation and interaction within the game.
+- **Optimized Rendering:** Designed for efficiency while maintaining simplicity in design.
+- **Modular Design:** Separated into modules to enhance readability and maintainability.
 
-        WASD for movement.
+---
 
-        Arrow keys or mouse to rotate the camera.
+## Prerequisites
 
-        ESC to exit the game.
+Ensure you have the following installed before building the project:
+- A C compiler (such as `gcc`)
+- [Make](https://www.gnu.org/software/make/) for build automation
+- The [MiniLibX](https://harm-smits.github.io/42libs/) graphics library, as required by the project
+- A Unix/Linux development environment or equivalent (such as macOS with proper setup)
+- Basic knowledge of C programming and graphics programming concepts
 
-    Error Handling:
+---
 
-        Gracefully exit on invalid maps, missing textures, or incorrect RGB values.
+## Installation
 
-        Prevent memory leaks and crashes.
+Follow these steps to clone, build, and run Cub3d on your machine:
 
-Technical Implementation
+1. **Clone the Repository:**
 
-    Raycasting Algorithm:
+   ```bash
+   git clone https://github.com/Kinglo25/Cub3d.git
+   cd Cub3d
+   ```
 
-        Cast rays for each vertical screen column.
+2. **Build the Project:**
 
-        Calculate ray direction, wall intersections, and distances.
+   Clean up any previous builds and compile the project using Make:
 
-        Determine wall height and texture coordinates for each "slice."
+   ```bash
+   make fclean
+   make
+   ```
 
-        Render floors/ceilings using horizontal distance calculations (bonus).
+3. **Verify the Build:**
 
-    Graphics Library:
+   Run the executable to check that the engine starts correctly:
 
-        Use MinilibX (42's lightweight graphics library) for window management, pixel rendering, and event hooks.
+   ```bash
+   ./Cub3d maps/your_map_file.cub
+   ```
 
-    Map Validation:
+   Replace `maps/your_map_file.cub` with the path to a valid map file.
 
-        Flood-fill or BFS to ensure the map is fully enclosed.
+---
 
-        Check for valid player spawn points and forbidden characters.
+## Configuration
 
-    Event Loop:
+The Cub3d engine relies on a configuration file (with a `.cub` extension) that contains the map layout and texture paths. A typical configuration file includes:
 
-        Handle keyboard/mouse inputs via MinilibX hooks (mlx_hook, mlx_loop_hook).
+- **Map Layout:** A grid representing walls, spaces, and sprites.
+- **Texture Paths:** File paths for wall textures, sprite textures, and any additional graphics.
+- **Player Settings:** Initial coordinates and viewing direction for the player.
 
-        Update player position and camera angles based on inputs.
+Example snippet from a configuration file:
 
-        Implement collision detection to prevent walking through walls.
+```ini
+NO ./textures/wall_north.xpm
+SO ./textures/wall_south.xpm
+WE ./textures/wall_west.xpm
+EA ./textures/wall_east.xpm
 
-    Texture Management:
+# Map layout
+1111111111
+1000000001
+1011001101
+1000000001
+1111111111
+```
 
-        Load textures from .xpm files into buffers.
+Ensure that paths and map data are correctly configured for your setup.
 
-        Map texture pixels to wall slices based on ray hit positions.
+---
 
-Bonus Extensions
+## Usage
 
-Optional features to enhance gameplay and complexity:
+After building the project, start the engine with a map file:
 
-    Minimap: Display a 2D overhead map in a corner.
+```bash
+./Cub3d maps/your_map_file.cub
+```
 
-    Sprite Rendering: Add static or animated objects (e.g., lamps, enemies).
+- **Controls:**  
+  - Use the arrow keys or `W`, `A`, `S`, `D` for movement.
+  - Rotate the view with the left/right arrow keys.
+  - Use additional keys as defined by your implementation (refer to your project documentation).
 
-    Door Mechanics: Open/close doors with a key press.
+- **Game Loop:**  
+  The program will continuously render the 3D environment based on the player's input until the window is closed.
 
-    Mouse Look: Rotate the view horizontally/vertically with mouse movement.
+---
 
-    Skybox: Render a dynamic sky texture or day/night cycle.
+## Troubleshooting
 
-    Sound Effects: Play sounds for actions like walking or opening doors.
+- **Compilation Issues:**  
+  Ensure that all prerequisites, including MiniLibX, are correctly installed and configured.  
+  Double-check your Makefile settings if errors occur during build.
 
-Learning Outcomes
+- **Runtime Errors:**  
+  Verify that the provided map file exists and is correctly formatted.  
+  Check that texture file paths are correct and that MiniLibX is properly linked.
 
-    Raycasting: Understand how 3D projection is simulated using 2D math.
+- **Graphics Issues:**  
+  If the screen does not display correctly, ensure your graphics environment supports MiniLibX and that your drivers are up to date.
 
-    Graphics Programming: Manipulate pixels, textures, and event loops with MinilibX.
+For additional troubleshooting, consult project documentation, your peers, or instructors at School 42.
 
-    Game Physics: Implement movement, collision detection, and camera controls.
+---
 
-    File Parsing: Validate and process structured configuration files.
+## Contributing
 
-    Optimization: Balance rendering quality and performance for real-time updates.
+Contributions to Cub3d are welcome! To contribute:
+1. Fork the repository.
+2. Create a new branch for your changes (`git checkout -b feature/my-feature`).
+3. Make your modifications and ensure code follows the School 42 guidelines.
+4. Commit your changes with clear messages.
+5. Push your branch and create a pull request for review.
 
-Cub3D bridges creativity and technical rigor, offering hands-on experience in game development. It challenges students to combine mathematical precision with software design, resulting in a functional and immersive 3D engine. Mastery of this project lays the groundwork for advanced graphics programming and engine development.
+Your input and improvements help enhance the project for the entire community.
+
+---
+
+## Author
+
+- **Kinglo25**  
+  [GitHub: Kinglo25](https://github.com/Kinglo25)
+
+Developed as part of the School 42 curriculum.
+
+---
+
+## License
+
+Distributed under the MIT License. See the `LICENSE` file for more details.
+```
+
+---
+
+This README file is ready to use for the Cub3d project on GitHub. Simply update any specific details (such as paths or control schemes) if needed, and enjoy sharing your project!
